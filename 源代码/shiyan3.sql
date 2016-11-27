@@ -7,7 +7,7 @@ set pagesize 5000;
 clear screen;
 
 /*
- *  åˆ›å»ºäº†ä¸€ä¸ªè¡¨æ¥å­˜å­˜æ”¾studentæ•°æ®
+ *  ´´½¨ÁËÒ»¸ö±íÀ´´æ´æ·ÅstudentÊı¾İ
  *
  */
 drop table students;
@@ -25,10 +25,11 @@ Create table students(
 --ABCD14EFGH
 
 /*
- * åˆ›å»ºäº†4ä¸ªåºåˆ—æ¥ç”Ÿæˆç¼–å·
- * æ¯ä¸ª101åˆ°136æ¥ä»£æ›¿01åˆ°36çš„ç›®çš„æ˜¯ä¸ºäº†ä¸ç”¨è¡¥è¶³é•¿åº¦
+ * ´´½¨ÁË4¸öĞòÁĞÀ´Éú³É±àºÅ
+ * Ã¿¸ö101µ½136À´´úÌæ01µ½36µÄÄ¿µÄÊÇÎªÁË²»ÓÃ²¹×ã³¤¶È
  */
 drop SEQUENCE SEQ_AB;
+
 Create SEQUENCE SEQ_AB
 INCREMENT by 1
 START WITH 101
@@ -74,13 +75,13 @@ Declare
     temp_CD    number(3);
     temp_EF    number(3);
     temp_GH    number(3);
-    -- å»ºç«‹äº†ä¸€ä¸ªæ¸¸æ ‡æ¥è¿›è¡Œæ“ä½œï¼Œç”Ÿæˆçš„æ•°æ®é›†å¤ªå¤§äº†ï¼Œåœ¨è¿™ä¸ªæ¸¸æ ‡ä¸Šç”µè„‘æ— å“åº”æ˜¯æ­£å¸¸çš„ï¼Œåå°ç¨‹åºåœ¨æ‰§è¡Œ
-    -- è¿™é‡Œä½¿ç”¨çš„ç¬›å¡å°”ä¹˜ç§¯ï¼Œç”Ÿæˆå¤§é‡çš„åå­—
+    -- ½¨Á¢ÁËÒ»¸öÓÎ±êÀ´½øĞĞ²Ù×÷£¬Éú³ÉµÄÊı¾İ¼¯Ì«´óÁË£¬ÔÚÕâ¸öÓÎ±êÉÏµçÄÔÎŞÏìÓ¦ÊÇÕı³£µÄ£¬ºóÌ¨³ÌĞòÔÚÖ´ĞĞ
+    -- ÕâÀïÊ¹ÓÃµÄµÑ¿¨¶û³Ë»ı£¬Éú³É´óÁ¿µÄÃû×Ö
     Cursor c_new_name is 
         select s1.xing||s2.ming||s3.zi from 
-        (select distinct( substr(sname, 1, 1)) xing from sname where )s1,     --108
-        (select distinct( substr(sname, 2, 1)) ming from sname where )s2,     --888
-        (select distinct( substr(sname, 3, 1)) zi   from sname where )s3;
+        (select distinct( substr(sname, 1, 1)) xing from sname )s1,     --108
+        (select distinct( substr(sname, 2, 1)) ming from sname )s2,     --888
+        (select distinct( substr(sname, 3, 1)) zi   from sname )s3;
 
 Begin
     Open c_new_name;
@@ -131,7 +132,7 @@ select count(sno) from students;
 select systimestamp from dual;
 
 /*
- *  é‡æ–°å»ºç«‹ä¸€ä¸ªè¡¨æ¥æ’å…¥å¸¦ä¸»é”®çš„æ•°æ®ï¼Œä¸‹é¢çš„åŒ¿åè¿‡ç¨‹ä¸ä¸Šé¢çš„åŸºæœ¬ä¸Šæ˜¯å®Œå…¨ä¸€æ ·çš„
+ *  ÖØĞÂ½¨Á¢Ò»¸ö±íÀ´²åÈë´øÖ÷¼üµÄÊı¾İ£¬ÏÂÃæµÄÄäÃû¹ı³ÌÓëÉÏÃæµÄ»ù±¾ÉÏÊÇÍêÈ«Ò»ÑùµÄ
  */
 drop table students_with_key;
 Create table students_with_key(
@@ -154,9 +155,9 @@ Declare
     temp_GH    number(3);
     Cursor c_new_name is 
         select s1.xing||s2.ming||s3.zi from 
-        (select distinct( substr(sname, 1, 1)) xing from sname where )s1,    --572    --108
-        (select distinct( substr(sname, 2, 1)) ming from sname where )s2,    --14111  --888
-        (select distinct( substr(sname, 3, 1)) zi   from sname where )s3;
+        (select distinct( substr(sname, 1, 1)) xing from sname)s1,    --572    --108
+        (select distinct( substr(sname, 2, 1)) ming from sname)s2,    --14111  --888
+        (select distinct( substr(sname, 3, 1)) zi   from sname)s3;
 
 Begin
     Open c_new_name;
@@ -204,11 +205,134 @@ select systimestamp from dual;
 select count(sno) from students_with_key;
 select systimestamp from dual;
 
+/*
+ *
 
-select * from students where sname = 'èµµéŸµ';
-select systimestamp from dual;
-Create index id_sname on students(sname); 
-select systimestamp from dual;
-select * from students where sname = 'èµµéŸµ';
+CREATE TABLE rooms (
+  room_id          NUMBER(5) PRIMARY KEY,
+  building          VARCHAR2(15),
+  room_number      NUMBER(4),
+  number_seats      NUMBER(4),
+  description        VARCHAR2(50)
+ )
+PARTITION BY RANGE (room_id)
+SUBPARTITION BY HASH (number_seats)
+SUBPARTITIONS 2
+(PARTITION rooms_1 VALUES LESS THAN (30000),
+PARTITION rooms_2 VALUES LESS THAN (60000),
+PARTITION rooms_3 VALUES LESS THAN (maxvalue))£» 
+
+ *
+ *  ½¨Á¢Ò»¸ö·ÖÇø±í£¬ÔÙ²åÈëÊı¾İ£¬Éú³ÉÒ»¸ö´ø·ÖÇøµÄ±ístudents_with_partion
+ */
+
+drop table students_with_partion;
+Create table students_with_partion(
+    Sno      char(10),
+    Sname    varchar(10),
+    Sex      char(1),
+    Email    varchar(30) not null,
+    Tel      char(9) not null,
+    Birthday date check(to_date('19900101', 'YYYYMMDD') <= birthday and 
+                        to_date('19970831', 'YYYYMMDD') >= birthday ),
+    primary key(sno)
+)
+PARTITION BY RANGE(Sno)
+(
+    PARTITION students_0  VALUES LESS THAN ('0199999999'),
+    PARTITION students_1  VALUES LESS THAN ('0299999999'),
+    PARTITION students_2  VALUES LESS THAN ('0399999999'),
+    PARTITION students_3  VALUES LESS THAN ('0499999999'),
+    PARTITION students_4  VALUES LESS THAN ('0599999999'),
+    PARTITION students_5  VALUES LESS THAN ('0699999999'),
+    PARTITION students_6  VALUES LESS THAN ('0799999999'),
+    PARTITION students_7  VALUES LESS THAN ('0899999999'),
+    PARTITION students_8  VALUES LESS THAN ('0999999999'),
+    PARTITION students_9  VALUES LESS THAN ('9999999999')
+);
+
 select systimestamp from dual;
 
+-- select count(distinct( substr(sname, 1, 1))) xing from sname;
+-- select count(distinct( substr(sname, 2, 1))) xing from sname;
+-- select count(distinct( substr(sname, 3, 1))) xing from sname;
+
+Declare
+    temp_name  varchar(10);
+    temp_AB    number(3);
+    temp_CD    number(3);
+    temp_EF    number(3);
+    temp_GH    number(3);
+    Cursor c_new_name is 
+        select s1.xing||s2.ming||s3.zi from 
+        (select distinct( substr(sname, 1, 1)) xing from sname)s1,    -- 572
+        (select distinct( substr(sname, 2, 1)) ming from sname)s2,    -- 1504
+        (select distinct( substr(sname, 3, 1)) zi   from sname)s3;    -- 1203
+                                                                      -- 1034926464
+
+Begin
+    Open c_new_name;
+    select SEQ_AB.Nextval into temp_AB from dual;
+    select SEQ_CD.Nextval into temp_CD from dual;
+    select SEQ_EF.Nextval into temp_EF from dual;
+    select SEQ_GH.Nextval into temp_GH from dual;
+
+    While temp_AB <> 200 and temp_CD <> 200 and temp_EF <> 137 and temp_GH <> 137 Loop
+        While temp_CD <> 200 and temp_EF <> 137 and temp_GH <> 137 Loop
+            While temp_EF <> 137 and temp_GH <> 137 Loop
+                While temp_GH <> 137 Loop
+                    Fetch c_new_name into temp_name;
+                    Exit When c_new_name % Notfound;
+                    insert into students_with_partion(sno, sname, Sex, birthday, Email, Tel) values(
+                        substr( to_char(temp_AB), 2)|| substr( to_char(temp_CD), 2) ||'14'||substr( to_char(temp_EF), 2)||substr( to_char(temp_GH), 2),
+                        temp_name,
+                        round(dbms_random.value),
+                        to_date(TRUNC(DBMS_RANDOM.VALUE(to_number(to_char(to_date('19900101',  'yyyymmdd'), 'J')),  
+                                                        to_number(to_char(to_date('19970831', 'yyyymmdd')+1, 'J'))
+                                                        )
+                                     ),  'J'),
+                        dbms_random.string('a', 6)||'@'||dbms_random.string('a',3)||'.com',
+                        lpad(round(dbms_random.value(1,999999999)),9,0)
+                        );
+                    select SEQ_GH.Nextval into temp_GH from dual;
+                End Loop;
+                select SEQ_EF.Nextval into temp_EF from dual;
+                select SEQ_GH.Nextval into temp_GH from dual;
+            End Loop;
+            select SEQ_CD.Nextval into temp_CD from dual;
+            select SEQ_EF.Nextval into temp_EF from dual;
+            select SEQ_GH.Nextval into temp_GH from dual;
+        End Loop;
+        select SEQ_AB.Nextval into temp_AB from dual;
+        select SEQ_CD.Nextval into temp_CD from dual;
+        select SEQ_EF.Nextval into temp_EF from dual;
+        select SEQ_GH.Nextval into temp_GH from dual;
+    End Loop;
+    Close c_new_name;
+End;
+/
+
+select systimestamp from dual;
+
+-- 
+select count(*) from students where sex = 0;
+select systimestamp from dual;
+-- ´´½¨Î»Í¼Ë÷Òı bitmap index -- 
+create bitmap index bit_ind on students(sex);
+select systimestamp from dual;
+select count(*) from students where sex=0;
+
+
+select systimestamp from dual;
+
+-- Í³¼ÆÓĞÃ»ÓĞ½¨Á¢Ë÷ÒıµÄĞÔ±ğÍ³¼Æ
+select count(*) from students where substr(sname, 1, 1) = '·²';
+select systimestamp from dual;
+Create index index_sname on students(sname); 
+select systimestamp from dual;
+select count(*) from students where substr(sname, 1, 1) = '·²';
+select systimestamp from dual;
+-- 
+
+-- ·ÖÇø²éÑ¯
+-- SELECT * FROM students PARTITION£¨history£©ss    WHERE ss.current_credits=12  
